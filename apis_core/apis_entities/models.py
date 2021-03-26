@@ -288,8 +288,8 @@ class AbstractEntity(TempEntityClass):
         E.g. for Person.get_related_entity_field_names() or person_instance.get_related_entity_field_names() ->
         ['event_set', 'institution_set', 'personB_set', 'personA_set', 'place_set', 'work_set']
 
-        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class 
-        which wires the ManyToMany Fields into the entities and respective relationtypes. 
+        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class
+        which wires the ManyToMany Fields into the entities and respective relationtypes.
         This method is nevertheless defined here within AbstractEntity for documentational purpose.
         """
 
@@ -304,8 +304,8 @@ class AbstractEntity(TempEntityClass):
         :param entity_field_name: the name of one of several ManyToMany fields created automatically
         :return: None
 
-        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class 
-        which wires the ManyToMany Fields into the entities and respective relationtypes. 
+        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class
+        which wires the ManyToMany Fields into the entities and respective relationtypes.
         This method is nevertheless defined here within AbstractEntity for documentational purpose.
         """
 
@@ -444,8 +444,8 @@ class AbstractEntity(TempEntityClass):
         E.g. for PersonPerson.get_related_relationtype_field_names() or person_instance.get_related_relationtype_field_names() ->
         ['event_relationtype_set', 'institution_relationtype_set', 'personB_relationtype_set', 'personA_relationtype_set', 'place_relationtype_set', 'work_relationtype_set']
 
-        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class 
-        which wires the ManyToMany Fields into the entities and respective relationtypes. 
+        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class
+        which wires the ManyToMany Fields into the entities and respective relationtypes.
         This method is nevertheless defined here within AbstractEntity for documentational purpose.
         """
 
@@ -462,8 +462,8 @@ class AbstractEntity(TempEntityClass):
         :param entity_field_name: the name of one of several ManyToMany fields created automatically
         :return: None
 
-        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class 
-        which wires the ManyToMany Fields into the entities and respective relationtypes. 
+        Note: this method depends on the 'generate_all_fields' function of the EntityRelationFieldGenerator class
+        which wires the ManyToMany Fields into the entities and respective relationtypes.
         This method is nevertheless defined here within AbstractEntity for documentational purpose.
         """
 
@@ -515,6 +515,24 @@ class Person(AbstractEntity):
     first_name = models.CharField(
         max_length=255,
         help_text="The persons´s forename. In case of more then one name...",
+        blank=True,
+        null=True,
+    )
+    laqab_kunya = models.CharField(
+        max_length=255,
+        verbose_name="laqab/kunya",
+        blank=True,
+        null=True,
+    )
+    fathers_name = models.CharField(
+        max_length=255,
+        verbose_name="father's name",
+        blank=True,
+        null=True,
+    )
+    grandfathers_name = models.CharField(
+        max_length=255,
+        verbose_name="grandfather's name",
         blank=True,
         null=True,
     )
@@ -605,13 +623,17 @@ if a_ents:
 
 @receiver(post_save, dispatch_uid="create_default_uri")
 def create_default_uri(sender, instance, **kwargs):
-    if kwargs["created"] and sender in [Person, Institution, Place, Work, Event] + ents_cls_list:
+    if (
+        kwargs["created"]
+        and sender in [Person, Institution, Place, Work, Event] + ents_cls_list
+    ):
         if BASE_URI.endswith("/"):
             base1 = BASE_URI[:-1]
         else:
             base1 = BASE_URI
         uri_c = "{}{}".format(
-            base1, reverse("GetEntityGenericRoot", kwargs={"pk": instance.pk}),
+            base1,
+            reverse("GetEntityGenericRoot", kwargs={"pk": instance.pk}),
         )
         uri2 = Uri(uri=uri_c, domain="apis default", entity=instance)
         uri2.save()
@@ -628,11 +650,12 @@ lst_entities_complete = [
 lst_entities_complete = list(dict.fromkeys(lst_entities_complete))
 perm_change_senders = [
     getattr(getattr(x, "collection"), "through") for x in lst_entities_complete
-] # TODO: Inspect. This list here will contain only duplicates if `lst_entities_complete` contains all entities
+]  # TODO: Inspect. This list here will contain only duplicates if `lst_entities_complete` contains all entities
 
 
 @receiver(
-    m2m_changed, dispatch_uid="create_object_permissions",
+    m2m_changed,
+    dispatch_uid="create_object_permissions",
 )
 def create_object_permissions(sender, instance, **kwargs):
     if kwargs["action"] == "pre_add" and sender in perm_change_senders:
