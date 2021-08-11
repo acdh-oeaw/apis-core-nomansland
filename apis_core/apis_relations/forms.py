@@ -18,7 +18,7 @@ class EntityLabelForm(forms.ModelForm):
 
     class Meta:
         model = Label
-        fields = ['label', 'isoCode_639_3', 'label_type', 'start_date_written', 'end_date_written']
+        fields = ['label', 'isoCode_639_3', 'transliteration', 'label_type', 'start_date_written', 'end_date_written']
 
     def save(self, site_instance, instance=None, commit=True):
         cd = self.cleaned_data

@@ -201,6 +201,10 @@ class TextType(VocabsBaseClass):
         help_text="The ISO 639-3 (or 2) code for the label's language.",
         verbose_name='ISO Code', default='deu')
 
+@reversion.register(follow=['vocabsbaseclass_ptr'])
+class TransliterationType(VocabsBaseClass):
+    """Vocan used to set the kidn of Transliteration"""
+    pass
 
 
 #######################################################################

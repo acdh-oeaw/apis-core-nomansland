@@ -5,7 +5,7 @@ import unicodedata
 import reversion
 from django.db import models
 
-from apis_core.apis_vocabularies.models import LabelType
+from apis_core.apis_vocabularies.models import LabelType, TransliterationType
 from apis_core.helper_functions import DateParser
 
 
@@ -17,6 +17,8 @@ class Label(models.Model):
         max_length=3, blank=True, null=True,
         help_text="The ISO 639-3 (or 2) code for the label's language.",
         verbose_name='ISO Code', default='deu')
+    transliteration = models.ForeignKey(TransliterationType, blank=True, null=True,
+                                   on_delete=models.SET_NULL)
     label_type = models.ForeignKey(LabelType, blank=True, null=True,
                                    on_delete=models.SET_NULL)
 

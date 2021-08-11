@@ -18,7 +18,7 @@ class LabelForm(forms.ModelForm):
 
     class Meta:
         model = Label
-        fields = ['label', 'isoCode_639_3', 'label_type']
+        fields = ['label', 'isoCode_639_3', 'label_type', 'transliteration']
 
     def __init__(self, *args, **kwargs):
         super(LabelForm, self).__init__(*args, **kwargs)
