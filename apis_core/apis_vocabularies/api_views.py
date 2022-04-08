@@ -6,7 +6,7 @@ from .models import (
     InstitutionType, ProfessionType, PlaceType, PersonInstitutionRelation, PersonPlaceRelation, PersonPersonRelation,
     VocabNames, InstitutionPlaceRelation, PersonEventRelation,
     PersonWorkRelation, InstitutionEventRelation, InstitutionWorkRelation, PlaceWorkRelation, PlaceEventRelation,
-    PlacePlaceRelation, EventWorkRelation, EventEventRelation, WorkWorkRelation, EventType, WorkType)
+    PlacePlaceRelation, EventWorkRelation, EventEventRelation, EventType, WorkType)
 from .serializers import (
     InstitutionInstitutionRelationSerializer, TextTypeSerializer,
     CollectionTypeSerializer, VocabsBaseClassSerializer,
@@ -16,7 +16,7 @@ from .serializers import (
     PersonPersonRelationSerializer, PersonEventRelationSerializer, PersonWorkRelationSerializer,
     InstitutionEventRelationSerializer, InstitutionWorkRelationSerializer, PlaceEventRelationSerializer,
     PlaceWorkRelationSerializer, PlacePlaceRelationSerializer, EventWorkRelationSerializer,
-    EventEventRelationSerializer, WorkWorkRelationSerializer, EventTypeSerializer, WorkTypeSerializer)
+    EventEventRelationSerializer, EventTypeSerializer, WorkTypeSerializer)
 
 
 ###########################################################
@@ -159,10 +159,6 @@ class EventEventRelationViewSet(viewsets.ModelViewSet):
     queryset = EventEventRelation.objects.all()
     serializer_class = EventEventRelationSerializer
 
-
-class WorkWorkRelationViewSet(viewsets.ModelViewSet):
-    queryset = WorkWorkRelation.objects.all()
-    serializer_class = WorkWorkRelationSerializer
 
 
 

@@ -16,7 +16,7 @@ from .forms2 import GenericRelationForm
 from .models import (
     PersonPlace, PersonPerson, PersonInstitution, InstitutionPlace,
     InstitutionInstitution, PlacePlace, PersonEvent, InstitutionEvent, PlaceEvent, PersonWork,
-    InstitutionWork, PlaceWork, EventWork, WorkWork
+    InstitutionWork, PlaceWork, EventWork
 )
 #from .forms import PersonLabelForm, InstitutionLabelForm, PlaceLabelForm, EventLabelForm
 from .tables import LabelTableEdit
@@ -60,8 +60,7 @@ form_class_dict = turn_form_modules_into_dict(form_module_list)
 
 
 # Model-classes must be registered together with their ModelForm-classes
-registered_forms = {'WorkWorkForm': [WorkWork, Work, Work],
-                    'PersonPlaceForm': [PersonPlace, Person, Place],
+registered_forms = {'PersonPlaceForm': [PersonPlace, Person, Place],
                     'PersonPlaceHighlighterForm': [PersonPlace, Person, Place],
                     'PersonPersonForm': [PersonPerson, Person, Person],
                     'PersonPersonHighlighterForm': [PersonPerson, Person, Person],

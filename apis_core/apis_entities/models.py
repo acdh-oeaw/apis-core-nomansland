@@ -1,4 +1,5 @@
 import inspect
+from pyexpat import model
 import re
 import sys
 import unicodedata
@@ -19,10 +20,14 @@ from apis_core.apis_metainfo.models import Collection, TempEntityClass, Uri
 from apis_core.apis_vocabularies.models import (
     EventType,
     InstitutionType,
+    Language,
+    ManuscriptConditions,
     PlaceType,
     ProfessionType,
     Title,
     WorkType,
+    PrincipalRole,
+    SubjectHeadings
 )
 from apis_core.helper_functions import EntityRelationFieldGenerator
 
@@ -541,6 +546,7 @@ class Person(AbstractEntity):
     gender = models.CharField(
         max_length=15, choices=GENDER_CHOICES, blank=True, null=True
     )
+    principal_role = models.ForeignKey(PrincipalRole, blank=True, null=True, on_delete=models.SET_NULL)
 
     def save(self, *args, **kwargs):
         if self.first_name:
@@ -587,9 +593,49 @@ class Event(AbstractEntity):
 class Work(AbstractEntity):
 
     kind = models.ForeignKey(WorkType, blank=True, null=True, on_delete=models.SET_NULL)
-
+    subject_headings = models.ManyToManyField(SubjectHeadings, blank=True, null=True)
 
 a_ents = getattr(settings, "APIS_ADDITIONAL_ENTITIES", False)
+
+
+#################################################################################
+#
+# Nomansland specific entities
+#
+#################################################################################
+
+
+@reversion.register(follow=["tempentityclass_ptr"])
+class Expression(AbstractEntity):
+   '''A version of a given WORK as it appears in a particular MANUSCRIPT at a given Locus'''
+   title = models.TextField()
+   locus = models.CharField(max_length=255, blank=True, null=True)
+   language = models.ManyToManyField(Language, null=True, blank=True) 
+
+CHOICES_FOLIATION = [
+    (None, '---'),
+    ('eur', 'European'),
+    ('ara', 'Arabic')
+]
+
+@reversion.register(follow=["tempentityclass_ptr"])
+class Manuscript(AbstractEntity):
+    '''A physical item with a written surface, containing one or more EXPRESSIONs of WORKs.  
+
+    A manuscript comes into existence being copied by one or more PERSONS at a given PLACE at a given time. >  
+
+    A manuscript is owned by a PERSON or INSTITUTION and located at a given PLACE. This ownership may leave ownership marks. 
+
+    '''
+
+    identifier = models.CharField(max_length=255)
+    extent = models.CharField(max_length=255, null=True, blank=True)
+    leaf_dimension = models.CharField(max_length=255, null=True, blank=True)
+    written_dimension = models.CharField(max_length=255, null=True, blank=True)
+    foliation_type = models.CharField(max_length=3, choices=CHOICES_FOLIATION, default=None, blank=True, null=True)
+    foliation_note = models.TextField(null=True, blank=True)
+    manuscript_conditions = models.ManyToManyField(ManuscriptConditions, null=True, blank=True)
+
 
 
 def prepare_fields_dict(fields_list, vocabs, vocabs_m2m):
