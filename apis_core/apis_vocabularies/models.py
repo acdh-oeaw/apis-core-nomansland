@@ -201,11 +201,40 @@ class TextType(VocabsBaseClass):
         help_text="The ISO 639-3 (or 2) code for the label's language.",
         verbose_name='ISO Code', default='deu')
 
+####################################################################################
+#
+# Nomansland specific Vocabs
+#
+####################################################################################
+
 @reversion.register(follow=['vocabsbaseclass_ptr'])
 class TransliterationType(VocabsBaseClass):
-    """Vocan used to set the kidn of Transliteration"""
+    """Vocab used to set the kidn of Transliteration"""
     pass
 
+
+@reversion.register(follow=['vocabsbaseclass_ptr'])
+class PrincipalRole(VocabsBaseClass):
+    """Vocab used to set the principal role of a person"""
+    pass
+
+
+@reversion.register(follow=['vocabsbaseclass_ptr'])
+class SubjectHeadings(VocabsBaseClass):
+    """Vocab used to set the subject headings for a work"""
+    pass
+
+
+@reversion.register(follow=['vocabsbaseclass_ptr'])
+class Language(VocabsBaseClass):
+    """Vocab used to set the language for an expression"""
+    pass
+
+
+@reversion.register(follow=['vocabsbaseclass_ptr'])
+class ManuscriptConditions(VocabsBaseClass):
+    """Vocab used to set the condition of a manuscript"""
+    pass
 
 #######################################################################
 #
@@ -431,8 +460,41 @@ class EventWorkRelation(AbstractRelationType):
 #######################################################################
 
 
+#######################################################################
+# Nomansland-Relation-Types
+#######################################################################
+
 @reversion.register(follow=['relationbaseclass_ptr'])
-class WorkWorkRelation(AbstractRelationType):
+class ExpressionWorkRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class ManuscriptPlaceRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class ManuscriptExpressionRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class ManuscriptInstitutionRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class ManuscriptWorkRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class ManuscriptPersonRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Works and Works"""
     pass
 

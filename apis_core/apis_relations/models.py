@@ -518,15 +518,41 @@ class EventWork(AbstractRelation):
     pass
 
 
+
 #######################################################################
 #
-#   Work - ... - Relation
+#   Nomansland specific Relations
 #
 #######################################################################
+
+@reversion.register(follow=['tempentityclass_ptr'])
+class ManuscriptWork(AbstractRelation):
+
+    pass
+
+@reversion.register(follow=['tempentityclass_ptr'])
+class ManuscriptPerson(AbstractRelation):
+
+    pass
+
+@reversion.register(follow=['tempentityclass_ptr'])
+class ManuscriptPlace(AbstractRelation):
+
+    pass
+
+@reversion.register(follow=['tempentityclass_ptr'])
+class ManuscriptInstitution(AbstractRelation):
+
+    pass
 
 
 @reversion.register(follow=['tempentityclass_ptr'])
-class WorkWork(AbstractRelation):
+class ManuscriptExpression(AbstractRelation):
+
+    pass
+
+@reversion.register(follow=['tempentityclass_ptr'])
+class ExpressionWork(AbstractRelation):
 
     pass
 

@@ -401,6 +401,24 @@ class WorkListFilter(GenericListFilter):
 Work.set_list_filter_class(WorkListFilter)
 
 
+class ManuscriptListFilter(GenericListFilter):
+
+    class Meta(GenericListFilter.Meta):
+        model = Manuscript
+
+    name = django_filters.CharFilter()
+
+Manuscript.set_list_filter_class(ManuscriptListFilter)
+
+class ExpressionListFilter(GenericListFilter):
+
+    class Meta(GenericListFilter.Meta):
+        model = Expression
+
+    title = django_filters.CharFilter()
+
+Expression.set_list_filter_class(ExpressionListFilter)
+
 a_ents = getattr(settings, 'APIS_ADDITIONAL_ENTITIES', False)
 
 if a_ents:

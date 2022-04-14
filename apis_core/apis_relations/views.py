@@ -9,14 +9,15 @@ from django.http import HttpResponse, Http404
 from django.template.loader import render_to_string
 from apis_core.apis_relations import forms as relation_form_module
 
-from apis_core.apis_entities.models import Person, Institution, Place, Event, Work, AbstractEntity
+from apis_core.apis_entities.models import Person, Institution, Place, Event, Work, AbstractEntity, Manuscript, Expression
 from apis_core.apis_labels.models import Label
 from apis_core.apis_metainfo.models import Uri
 from .forms2 import GenericRelationForm
 from .models import (
     PersonPlace, PersonPerson, PersonInstitution, InstitutionPlace,
     InstitutionInstitution, PlacePlace, PersonEvent, InstitutionEvent, PlaceEvent, PersonWork,
-    InstitutionWork, PlaceWork, EventWork, WorkWork
+    InstitutionWork, PlaceWork, EventWork, ManuscriptPerson, ManuscriptExpression, ManuscriptInstitution,
+    ManuscriptPlace, ManuscriptWork
 )
 #from .forms import PersonLabelForm, InstitutionLabelForm, PlaceLabelForm, EventLabelForm
 from .tables import LabelTableEdit
@@ -60,8 +61,7 @@ form_class_dict = turn_form_modules_into_dict(form_module_list)
 
 
 # Model-classes must be registered together with their ModelForm-classes
-registered_forms = {'WorkWorkForm': [WorkWork, Work, Work],
-                    'PersonPlaceForm': [PersonPlace, Person, Place],
+registered_forms = {'PersonPlaceForm': [PersonPlace, Person, Place],
                     'PersonPlaceHighlighterForm': [PersonPlace, Person, Place],
                     'PersonPersonForm': [PersonPerson, Person, Person],
                     'PersonPersonHighlighterForm': [PersonPerson, Person, Person],
@@ -88,8 +88,14 @@ registered_forms = {'WorkWorkForm': [WorkWork, Work, Work],
                     'PersonLabelForm': [Label, Person, Label],
                     'EventLabelForm': [Label, Event, Label],
                     'PersonResolveUriForm': [Uri, Person, Uri],
-                    'SundayHighlighterForm': [ ],
+                    'ManuscriptPersonForm': [ManuscriptPerson, Manuscript, Person],
+                    'ManuscriptInstitutionForm': [ManuscriptInstitution, Manuscript, Institution],
+                    'ManuscriptPlaceForm': [ManuscriptPlace, Manuscript, Place],
+                    'ManuscriptWorkForm': [ManuscriptWork, Manuscript, Work],
+                    'ManuscriptExpressionForm': [ManuscriptExpression, Manuscript, Expression],
                     'AddRelationHighlighterPersonForm': [],
+                    'ManuscriptLabelForm': [Label, Manuscript, Label],
+                    'ExpressionLabelForm': [Label, Expression, Label],
                     #'PlaceHighlighterForm': [Annotation, ],
                     #'PersonHighlighterForm': [Annotation, ]
                     }
