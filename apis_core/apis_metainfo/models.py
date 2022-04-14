@@ -146,7 +146,8 @@ class TempEntityClass(models.Model):
     @classmethod
     def get_listview_url(self):
         entity = self.__name__.lower()
-        if entity == "institution" or len(entity) < 10:
+        entities_configured = [x.lower().strip() for x in getattr(settings, "APIS_ENTITIES")]
+        if entity in entities_configured:
             return reverse(
                 "apis_core:apis_entities:generic_entities_list",
                 kwargs={"entity": entity},
@@ -160,7 +161,8 @@ class TempEntityClass(models.Model):
     @classmethod
     def get_createview_url(self):
         entity = self.__name__.lower()
-        if entity == "institution" or len(entity) < 10:
+        entities_configured = [x.lower().strip() for x in getattr(settings, "APIS_ENTITIES")]
+        if entity in entities_configured:
             return reverse(
                 "apis_core:apis_entities:generic_entities_create_view",
                 kwargs={"entity": entity},
@@ -170,7 +172,8 @@ class TempEntityClass(models.Model):
 
     def get_edit_url(self):
         entity = self.__class__.__name__.lower()
-        if entity == "institution" or len(entity) < 10:
+        entities_configured = [x.lower().strip() for x in getattr(settings, "APIS_ENTITIES")]
+        if entity in entities_configured:
             return reverse(
                 "apis_core:apis_entities:generic_entities_edit_view",
                 kwargs={"entity": entity, "pk": self.id},
@@ -187,7 +190,8 @@ class TempEntityClass(models.Model):
 
     def get_absolute_url(self):
         entity = self.__class__.__name__.lower()
-        if entity == "institution" or len(entity) < 10:
+        entities_configured = [x.lower().strip() for x in getattr(settings, "APIS_ENTITIES")]
+        if entity in entities_configured:
             return reverse(
                 "apis_core:apis_entities:generic_entities_detail_view",
                 kwargs={"entity": entity, "pk": self.id},
@@ -242,7 +246,8 @@ class TempEntityClass(models.Model):
 
     def get_delete_url(self):
         entity = self.__class__.__name__.lower()
-        if entity == "institution" or len(entity) < 10:
+        entities_configured = [x.lower().strip() for x in getattr(settings, "APIS_ENTITIES")]
+        if entity in entities_configured:
             return reverse(
                 "apis_core:apis_entities:generic_entities_delete_view",
                 kwargs={"entity": entity, "pk": self.id},
@@ -317,6 +322,9 @@ class TempEntityClass(models.Model):
 
     def get_serialization(self):
         return EntitySerializer(self).data
+    
+       
+
 
 
 @reversion.register()
