@@ -17,7 +17,7 @@ from .models import (
     PersonPlace, PersonPerson, PersonInstitution, InstitutionPlace,
     InstitutionInstitution, PlacePlace, PersonEvent, InstitutionEvent, PlaceEvent, PersonWork,
     InstitutionWork, PlaceWork, EventWork, ManuscriptPerson, ManuscriptExpression, ManuscriptInstitution,
-    ManuscriptPlace, ManuscriptWork
+    ManuscriptPlace, ManuscriptWork, ExpressionWork
 )
 #from .forms import PersonLabelForm, InstitutionLabelForm, PlaceLabelForm, EventLabelForm
 from .tables import LabelTableEdit
@@ -93,6 +93,7 @@ registered_forms = {'PersonPlaceForm': [PersonPlace, Person, Place],
                     'ManuscriptPlaceForm': [ManuscriptPlace, Manuscript, Place],
                     'ManuscriptWorkForm': [ManuscriptWork, Manuscript, Work],
                     'ManuscriptExpressionForm': [ManuscriptExpression, Manuscript, Expression],
+                    'ExpressionWorkForm': [ExpressionWork, Work, Expression],
                     'AddRelationHighlighterPersonForm': [],
                     'ManuscriptLabelForm': [Label, Manuscript, Label],
                     'ExpressionLabelForm': [Label, Expression, Label],
