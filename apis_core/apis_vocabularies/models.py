@@ -236,6 +236,13 @@ class ManuscriptConditions(VocabsBaseClass):
     """Vocab used to set the condition of a manuscript"""
     pass
 
+
+@reversion.register(follow=['vocabsbaseclass_ptr'])
+class SubjectsAnnotations(VocabsBaseClass):
+    """Vocab to define tags used in annotations of full texts"""
+    pass
+
+
 #######################################################################
 #
 #   relation types
