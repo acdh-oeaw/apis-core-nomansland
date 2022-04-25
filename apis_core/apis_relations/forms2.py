@@ -90,6 +90,7 @@ class GenericRelationForm(forms.ModelForm):
         x.end_date_written = cd['end_date_written']
         x.notes = cd['notes']
         x.references = cd['references']
+        x.certainty = cd['certainty']
         setattr(x, self.rel_accessor[3], site_instance)
         target = AbstractEntity.get_entity_class_of_name(self.rel_accessor[0])
         t1 = target.get_or_create_uri(cd['target'])
@@ -184,6 +185,7 @@ class GenericRelationForm(forms.ModelForm):
         super(GenericRelationForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['relation_type'] = forms.CharField(label='Relation type', required=True)
+        self.fields['certainty'] = forms.ChoiceField(label='Certainty', choices=((None, '---'), ('low', 'low'), ('medium', 'medium'), ('high', 'high')), required=False)
         self.helper = FormHelper()
         self.helper.form_class = '{}Form'.format(str(self.relation_form))
         self.helper.form_tag = False
@@ -260,6 +262,7 @@ class GenericRelationForm(forms.ModelForm):
                  str(getattr(instance, self.rel_accessor[2])))]
             self.fields['target'].initial = (str(Uri.objects.filter(entity=getattr(instance, self.rel_accessor[2]))[0]),
                                              str(getattr(instance, self.rel_accessor[2])))
+            self.fields['certainty'].initial = (instance.certainty, instance.certainty)
             if self.rel_accessor[1]:
                 self.fields['relation_type'].choices = [(instance.relation_type.id,
                                                          instance.relation_type.label)]
@@ -277,6 +280,7 @@ class GenericRelationForm(forms.ModelForm):
             'target',
             'start_date_written',
             'end_date_written',
+            'certainty',
             Accordion(
                 AccordionGroup(
                     'Notes and References',

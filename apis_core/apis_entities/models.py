@@ -607,10 +607,15 @@ a_ents = getattr(settings, "APIS_ADDITIONAL_ENTITIES", False)
 
 @reversion.register(follow=["tempentityclass_ptr"])
 class Expression(AbstractEntity):
-   '''A version of a given WORK as it appears in a particular MANUSCRIPT at a given Locus'''
-   title = models.TextField()
-   locus = models.CharField(max_length=255, blank=True, null=True)
-   language = models.ManyToManyField(Language, null=True, blank=True) 
+    '''A version of a given WORK as it appears in a particular MANUSCRIPT at a given Locus'''
+    title = models.TextField()
+    locus = models.CharField(max_length=255, blank=True, null=True)
+    language = models.ManyToManyField(Language, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
 
 CHOICES_FOLIATION = [
     (None, '---'),
@@ -671,7 +676,7 @@ if a_ents:
 def create_default_uri(sender, instance, **kwargs):
     if (
         kwargs["created"]
-        and sender in [Person, Institution, Place, Work, Event] + ents_cls_list
+        and sender in [Person, Institution, Place, Work, Event, Expression, Manuscript] + ents_cls_list
     ):
         if BASE_URI.endswith("/"):
             base1 = BASE_URI[:-1]
