@@ -13,6 +13,7 @@ from apis_core.helper_functions import DateParser
 class Label(models.Model):
     label = models.CharField(
         max_length=255, blank=True, help_text="The entities label or name.")
+    arabic_script = models.CharField(max_length=255, blank=True, null=True, help_text="Label in arabic script if needed")
     isoCode_639_3 = models.CharField(
         max_length=3, blank=True, null=True,
         help_text="The ISO 639-3 (or 2) code for the label's language.",
