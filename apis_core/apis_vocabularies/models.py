@@ -482,6 +482,11 @@ class ExpressionWorkRelation(AbstractRelationType):
     pass
 
 @reversion.register(follow=['relationbaseclass_ptr'])
+class ExpressionPersonRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of expressions and persons"""
+    pass
+
+@reversion.register(follow=['relationbaseclass_ptr'])
 class ManuscriptPlaceRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Works and Works"""
     pass

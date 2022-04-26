@@ -557,6 +557,12 @@ class ExpressionWork(AbstractRelation):
     pass
 
 
+@reversion.register(follow=['tempentityclass_ptr'])
+class ExpressionPerson(AbstractRelation):
+
+    pass
+
+
 a_ents = getattr(settings, 'APIS_ADDITIONAL_ENTITIES', False)
 
 

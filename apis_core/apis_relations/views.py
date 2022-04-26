@@ -14,7 +14,7 @@ from apis_core.apis_labels.models import Label
 from apis_core.apis_metainfo.models import Uri
 from .forms2 import GenericRelationForm
 from .models import (
-    PersonPlace, PersonPerson, PersonInstitution, InstitutionPlace,
+    ExpressionPerson, PersonPlace, PersonPerson, PersonInstitution, InstitutionPlace,
     InstitutionInstitution, PlacePlace, PersonEvent, InstitutionEvent, PlaceEvent, PersonWork,
     InstitutionWork, PlaceWork, EventWork, ManuscriptPerson, ManuscriptExpression, ManuscriptInstitution,
     ManuscriptPlace, ManuscriptWork, ExpressionWork
@@ -94,6 +94,7 @@ registered_forms = {'PersonPlaceForm': [PersonPlace, Person, Place],
                     'ManuscriptWorkForm': [ManuscriptWork, Manuscript, Work],
                     'ManuscriptExpressionForm': [ManuscriptExpression, Manuscript, Expression],
                     'ExpressionWorkForm': [ExpressionWork, Work, Expression],
+                    'ExpressionPersonForm': [ExpressionPerson, Person, Expression],
                     'AddRelationHighlighterPersonForm': [],
                     'ManuscriptLabelForm': [Label, Manuscript, Label],
                     'ExpressionLabelForm': [Label, Expression, Label],
