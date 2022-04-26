@@ -243,6 +243,11 @@ class SubjectsAnnotations(VocabsBaseClass):
     pass
 
 
+@reversion.register(follow=['vocabsbaseclass_ptr'])
+class ScriptType(VocabsBaseClass):
+    """Vocab to hold the type of script"""
+    pass
+
 #######################################################################
 #
 #   relation types

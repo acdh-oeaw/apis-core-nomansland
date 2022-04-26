@@ -24,6 +24,7 @@ from apis_core.apis_vocabularies.models import (
     ManuscriptConditions,
     PlaceType,
     ProfessionType,
+    ScriptType,
     Title,
     WorkType,
     PrincipalRole,
@@ -611,6 +612,8 @@ class Expression(AbstractEntity):
     title = models.TextField()
     locus = models.CharField(max_length=255, blank=True, null=True)
     language = models.ManyToManyField(Language, null=True, blank=True)
+    script_title = models.ForeignKey(ScriptType, null=True, blank=True, on_delete=models.SET_NULL, related_name="ScriptTypeTitle_set")
+    script_body = models.ForeignKey(ScriptType, null=True, blank=True, on_delete=models.SET_NULL, related_name="ScriptTypeBody_set")
 
     def __str__(self):
         return self.title
