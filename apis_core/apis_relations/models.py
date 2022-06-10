@@ -517,7 +517,16 @@ class EventWork(AbstractRelation):
 
     pass
 
+#######################################################################
+#
+#   Work - ... - Relation
+#
+#######################################################################
 
+@reversion.register(follow=['tempentityclass_ptr'])
+class WorkWork(AbstractRelation):
+
+    pass
 
 #######################################################################
 #

@@ -471,6 +471,10 @@ class EventWorkRelation(AbstractRelationType):
 # Work-Relation-Types
 #######################################################################
 
+@reversion.register(follow=['relationbaseclass_ptr'])
+class WorkWorkRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Work Work Relations"""
+    pass
 
 #######################################################################
 # Nomansland-Relation-Types
