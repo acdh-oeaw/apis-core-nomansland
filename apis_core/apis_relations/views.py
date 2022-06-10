@@ -15,9 +15,9 @@ from apis_core.apis_metainfo.models import Uri
 from .forms2 import GenericRelationForm
 from .models import (
     ExpressionPerson, PersonPlace, PersonPerson, PersonInstitution, InstitutionPlace,
-    InstitutionInstitution, PlacePlace, PersonEvent, InstitutionEvent, PlaceEvent, PersonWork,
+    InstitutionInstitution, PlaceExpression, PlacePlace, PersonEvent, InstitutionEvent, PlaceEvent, PersonWork,
     InstitutionWork, PlaceWork, EventWork, ManuscriptPerson, ManuscriptExpression, ManuscriptInstitution,
-    ManuscriptPlace, ManuscriptWork, ExpressionWork
+    ManuscriptPlace, ManuscriptWork, ExpressionWork, WorkWork
 )
 #from .forms import PersonLabelForm, InstitutionLabelForm, PlaceLabelForm, EventLabelForm
 from .tables import LabelTableEdit
@@ -82,6 +82,8 @@ registered_forms = {'PersonPlaceForm': [PersonPlace, Person, Place],
                     'InstitutionWorkForm': [InstitutionWork, Institution, Work],
                     'PlaceEventForm': [PlaceEvent, Place, Event],
                     'PlaceWorkForm': [PlaceWork, Place, Work],
+                    'WorkWorkForm': [WorkWork, Work, Work],
+                    'PlaceExpressionForm': [PlaceExpression, Place, Expression],
                     'PlacePlaceForm': [PlacePlace, Place, Place],
                     'EventWorkForm': [EventWork, Event, Work],
                     'InstitutionLabelForm': [Label, Institution, Label],

@@ -450,6 +450,11 @@ class PlaceWorkRelation(AbstractRelationType):
     pass
 
 
+@reversion.register(follow=['relationbaseclass_ptr'])
+class PlaceExpressionRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Places and Expressions"""
+    pass
+
 #######################################################################
 # Event-Relation-Types
 #######################################################################

@@ -499,6 +499,11 @@ class PlaceWork(AbstractRelation):
     pass
 
 
+@reversion.register(follow=['tempentityclass_ptr'])
+class PlaceExpression(AbstractRelation):
+
+    pass
+
 #######################################################################
 #
 #   Event - ... - Relation
