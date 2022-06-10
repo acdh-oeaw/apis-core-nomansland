@@ -236,6 +236,18 @@ class ManuscriptConditions(VocabsBaseClass):
     """Vocab used to set the condition of a manuscript"""
     pass
 
+
+@reversion.register(follow=['vocabsbaseclass_ptr'])
+class SubjectsAnnotations(VocabsBaseClass):
+    """Vocab to define tags used in annotations of full texts"""
+    pass
+
+
+@reversion.register(follow=['vocabsbaseclass_ptr'])
+class ScriptType(VocabsBaseClass):
+    """Vocab to hold the type of script"""
+    pass
+
 #######################################################################
 #
 #   relation types
@@ -438,6 +450,11 @@ class PlaceWorkRelation(AbstractRelationType):
     pass
 
 
+@reversion.register(follow=['relationbaseclass_ptr'])
+class PlaceExpressionRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Places and Expressions"""
+    pass
+
 #######################################################################
 # Event-Relation-Types
 #######################################################################
@@ -459,6 +476,10 @@ class EventWorkRelation(AbstractRelationType):
 # Work-Relation-Types
 #######################################################################
 
+@reversion.register(follow=['relationbaseclass_ptr'])
+class WorkWorkRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Work Work Relations"""
+    pass
 
 #######################################################################
 # Nomansland-Relation-Types
@@ -467,6 +488,11 @@ class EventWorkRelation(AbstractRelationType):
 @reversion.register(follow=['relationbaseclass_ptr'])
 class ExpressionWorkRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class ExpressionPersonRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of expressions and persons"""
     pass
 
 @reversion.register(follow=['relationbaseclass_ptr'])

@@ -499,6 +499,11 @@ class PlaceWork(AbstractRelation):
     pass
 
 
+@reversion.register(follow=['tempentityclass_ptr'])
+class PlaceExpression(AbstractRelation):
+
+    pass
+
 #######################################################################
 #
 #   Event - ... - Relation
@@ -517,7 +522,16 @@ class EventWork(AbstractRelation):
 
     pass
 
+#######################################################################
+#
+#   Work - ... - Relation
+#
+#######################################################################
 
+@reversion.register(follow=['tempentityclass_ptr'])
+class WorkWork(AbstractRelation):
+
+    pass
 
 #######################################################################
 #
@@ -553,6 +567,12 @@ class ManuscriptExpression(AbstractRelation):
 
 @reversion.register(follow=['tempentityclass_ptr'])
 class ExpressionWork(AbstractRelation):
+
+    pass
+
+
+@reversion.register(follow=['tempentityclass_ptr'])
+class ExpressionPerson(AbstractRelation):
 
     pass
 

@@ -49,13 +49,13 @@ def get_entities_table(entity, edit_v, default_cols):
         render_start_date_written = generic_render_start_date_written
         render_end_date_written = generic_render_end_date_written
 
-        if edit_v:
+        if edit_v and "name" in default_cols:
             name = tables.LinkColumn(
                 'apis:apis_entities:generic_entities_edit_view',
                 args=[entity.lower(), A('pk')],
                 empty_values=[]
             )
-        else:
+        elif "name" in default_cols:
             name = tables.LinkColumn(
                 'apis:apis_entities:generic_entities_detail_view',
                 args=[entity.lower(), A('pk')],
@@ -69,7 +69,7 @@ def get_entities_table(entity, edit_v, default_cols):
         ]
         if 'merge' in default_cols:
             merge = MergeColumn(verbose_name='keep | remove', accessor='pk')
-        if 'id' in default_cols:
+        if 'id' in default_cols or "name" not in default_cols:
             id = tables.LinkColumn()
 
         class Meta:

@@ -112,6 +112,14 @@ def generate_all_fields():
                 # but however in the relation model only one of these two exists. Thus the right one will be picked.
                 if entity_class_name_a + entity_class_name_b == relation_class.__name__.lower():
 
+                    models.CharField(
+                        choices=((None, '---'), ('low', 'low'), ('medium', 'medium'), ('high', 'high')),
+                        max_length=10,
+                        null=True,
+                        blank=True,
+                        help_text='Specify the certainty of this information.'
+                    ).contribute_to_class(relation_class, 'certainty')
+
                     if entity_class_a != entity_class_b:
 
 

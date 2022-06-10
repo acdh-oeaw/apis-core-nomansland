@@ -58,6 +58,7 @@ def get_entities_form(entity):
             ]
             exclude.extend(model.get_related_entity_field_names())
             exclude.extend(model.get_related_relationtype_field_names())
+            exclude.extend(getattr(settings, "APIS_ENTITIES", {}).get(model.__name__, {}).get("form_exclude", []))
 
         def __init__(self, *args, **kwargs):
             super(GenericEntitiesForm, self).__init__(*args, **kwargs)
@@ -196,10 +197,14 @@ def get_entities_form(entity):
                 acc_grp1.append(f)
 
             self.helper.layout = Layout(Accordion(acc_grp1, acc_grp2))
-            self.fields["status"].required = False
-            self.fields["collection"].required = False
-            self.fields["start_date_written"].required = False
-            self.fields["end_date_written"].required = False
+            if "status" in self.fields.keys():
+                self.fields["status"].required = False
+            if "collection" in self.fields.keys():
+                self.fields["collection"].required = False
+            if "start_date_written" in self.fields.keys():
+                self.fields["start_date_written"].required = False
+            if "end_date_written" in self.fields.keys():
+                self.fields["end_date_written"].required = False
 
             instance = getattr(self, "instance", None)
             if instance != None:
@@ -213,7 +218,7 @@ def get_entities_form(entity):
                         single_end_date=instance.start_end_date,
                         single_date_written=instance.start_date_written,
                     )
-                else:
+                elif "start_date_written" in self.fields.keys():
                     self.fields[
                         "start_date_written"
                     ].help_text = DateParser.get_date_help_text_default()
@@ -227,7 +232,7 @@ def get_entities_form(entity):
                         single_end_date=instance.end_end_date,
                         single_date_written=instance.end_date_written,
                     )
-                else:
+                elif "end_date_written" in self.fields.keys():
                     self.fields[
                         "end_date_written"
                     ].help_text = DateParser.get_date_help_text_default()
