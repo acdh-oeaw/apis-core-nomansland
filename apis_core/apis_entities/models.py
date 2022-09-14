@@ -21,6 +21,7 @@ from apis_core.apis_vocabularies.models import (
     EventType,
     InstitutionType,
     Language,
+    ManuscriptpartType,
     ManuscriptConditions,
     PlaceType,
     ProfessionType,
@@ -646,12 +647,12 @@ class Manuscript(AbstractEntity):
 
 
 @reversion.register(follow=["tempentityclass_ptr"])
-class ManuscriptPart(AbstractEntity):
+class Manuscriptpart(AbstractEntity):
 
 
     identifier = models.CharField(max_length=255)
     locus = models.CharField(max_length=255, blank=True, null=True, help_text="Locus of the manuscript part")
-    type = models.ForeignKey(ManuscriptPartType, null=True, blank=True, on_delete=models.SET_NULL)
+    type = models.ForeignKey(ManuscriptpartType, null=True, blank=True, on_delete=models.SET_NULL)
 
 
 
@@ -688,7 +689,7 @@ if a_ents:
 def create_default_uri(sender, instance, **kwargs):
     if (
         kwargs["created"]
-        and sender in [Person, Institution, Place, Work, Event, Expression, Manuscript] + ents_cls_list
+        and sender in [Person, Institution, Place, Work, Event, Expression, Manuscript, Manuscriptpart] + ents_cls_list
     ):
         if BASE_URI.endswith("/"):
             base1 = BASE_URI[:-1]

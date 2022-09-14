@@ -41,7 +41,8 @@ class VocabsBaseClass(models.Model):
         'self', blank=True, null=True,
         on_delete=models.CASCADE
     )
-    status = models.CharField(max_length=4, choices=choices_status, default='can')
+    status = models.CharField(
+        max_length=4, choices=choices_status, default='can')
     userAdded = models.ForeignKey(
         User, blank=True, null=True,
         on_delete=models.SET_NULL
@@ -60,7 +61,8 @@ class VocabsBaseClass(models.Model):
     def save(self, *args, **kwargs):
         d, created = VocabNames.objects.get_or_create(name=type(self).__name__)
         self.vocab_name = d
-        if self.name != unicodedata.normalize('NFC', self.name):  # secure correct unicode encoding
+        # secure correct unicode encoding
+        if self.name != unicodedata.normalize('NFC', self.name):
             self.name = unicodedata.normalize('NFC', self.name)
         super(VocabsBaseClass, self).save(*args, **kwargs)
         return self
@@ -99,7 +101,8 @@ class RelationBaseClass(VocabsBaseClass):
             res = self.name_reverse
         while d.parent_class:
             try:
-                t = RelationBaseClass.objects.get(pk=d.parent_class.pk).name_reverse
+                t = RelationBaseClass.objects.get(
+                    pk=d.parent_class.pk).name_reverse
                 if len(t) < 1:
                     t = '(' + d.parent_class.name + ')'
             except Exception as e:
@@ -191,11 +194,13 @@ class CollectionType(VocabsBaseClass):
     """e.g. reseachCollection, importCollection """
     pass
 
+
 @reversion.register(follow=['vocabsbaseclass_ptr'])
 class TextType(VocabsBaseClass):
     """used to store the Text types for the forms"""
     entity = models.CharField(max_length=255)
-    collections = models.ManyToManyField('apis_metainfo.Collection', blank=True)
+    collections = models.ManyToManyField(
+        'apis_metainfo.Collection', blank=True)
     lang = models.CharField(
         max_length=3, blank=True, null=True,
         help_text="The ISO 639-3 (or 2) code for the label's language.",
@@ -206,6 +211,7 @@ class TextType(VocabsBaseClass):
 # Nomansland specific Vocabs
 #
 ####################################################################################
+
 
 @reversion.register(follow=['vocabsbaseclass_ptr'])
 class TransliterationType(VocabsBaseClass):
@@ -248,12 +254,17 @@ class ScriptType(VocabsBaseClass):
     """Vocab to hold the type of script"""
     pass
 
+
+@reversion.register(follow=['vocabsbaseclass_ptr'])
+class ManuscriptpartType(VocabsBaseClass):
+    """Vocab to hold the type of manuscript part"""
+    pass
+
 #######################################################################
 #
 #   relation types
 #
 #######################################################################
-
 
 
 class AbstractRelationType(RelationBaseClass):
@@ -269,10 +280,9 @@ class AbstractRelationType(RelationBaseClass):
     _all_relationtype_names = None
     _related_entity_field_names = None
 
-
     # Methods dealing with all relationtypes
     ####################################################################################################################
-    
+
     @classmethod
     def get_all_relationtype_classes(cls):
         """
@@ -299,7 +309,6 @@ class AbstractRelationType(RelationBaseClass):
 
         return cls._all_relationtype_classes
 
-
     @classmethod
     def get_relationtype_class_of_name(cls, relationtype_name):
         """
@@ -311,8 +320,8 @@ class AbstractRelationType(RelationBaseClass):
             if relationtype_class.__name__.lower() == relationtype_name.lower():
                 return relationtype_class
 
-        raise Exception("Could not find relationtype class of name:", relationtype_name)
-
+        raise Exception(
+            "Could not find relationtype class of name:", relationtype_name)
 
     @classmethod
     def get_all_relationtype_names(cls):
@@ -326,10 +335,9 @@ class AbstractRelationType(RelationBaseClass):
 
         return cls._all_relationtype_names
 
-
     # Methods dealing with related entities
     ####################################################################################################################
-    
+
     @classmethod
     def get_related_entity_field_names(cls):
         """
@@ -343,10 +351,10 @@ class AbstractRelationType(RelationBaseClass):
         """
 
         if cls._related_entity_field_names == None:
-            raise Exception("_related_entity_field_names was not initialized yet.")
+            raise Exception(
+                "_related_entity_field_names was not initialized yet.")
         else:
             return cls._related_entity_field_names
-
 
     @classmethod
     def add_related_entity_field_name(cls, entity_field_name):
@@ -485,15 +493,18 @@ class WorkWorkRelation(AbstractRelationType):
 # Nomansland-Relation-Types
 #######################################################################
 
+
 @reversion.register(follow=['relationbaseclass_ptr'])
 class ExpressionWorkRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Works and Works"""
     pass
 
+
 @reversion.register(follow=['relationbaseclass_ptr'])
 class ExpressionPersonRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of expressions and persons"""
     pass
+
 
 @reversion.register(follow=['relationbaseclass_ptr'])
 class ManuscriptPlaceRelation(AbstractRelationType):
@@ -525,6 +536,42 @@ class ManuscriptPersonRelation(AbstractRelationType):
     pass
 
 
+@reversion.register(follow=['relationbaseclass_ptr'])
+class ManuscriptManuscriptpartRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class InstitutionManuscriptpartRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class PersonManuscriptpartRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class WorkManuscriptpartRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class PlaceManuscriptpartRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class ExpressionManuscriptpartRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
 a_ents = getattr(settings, 'APIS_ADDITIONAL_ENTITIES', False)
 
 if a_ents:
@@ -540,17 +587,18 @@ if a_ents:
             base_ents = ['Person', 'Institution', 'Place', 'Work', 'Event']
             if isinstance(rels, str):
                 if rels == 'all':
-                    rels = base_ents + [x['name'].title() for x in ents['entities']]
+                    rels = base_ents + [x['name'].title()
+                                        for x in ents['entities']]
             else:
                 rels = base_ents + rels
             for r2 in rels:
-                attributes = {"__module__":__name__}
+                attributes = {"__module__": __name__}
                 if r2 in base_ents:
                     rel_class_name = f"{r2.title()}{ent['name'].title()}"
                 else:
                     rel_class_name = f"{ent['name'].title()}{r2.title()}"
                 attributes = {"__module__": __name__}
                 if f"{rel_class_name}Relation" not in globals().keys():
-                    ent_class = type(f"{rel_class_name}Relation", (AbstractRelationType,), attributes)
+                    ent_class = type(
+                        f"{rel_class_name}Relation", (AbstractRelationType,), attributes)
                     globals()[f"{rel_class_name}Relation"] = ent_class
-

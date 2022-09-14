@@ -101,14 +101,11 @@ class AbstractRelation(TempEntityClass):
         abstract = True
         default_manager_name = 'objects'
 
-
-
     # Methods dealing with individual data retrievals of instances
     ####################################################################################################################
 
     def __str__(self):
         return "{} ({}) {}".format(self.get_related_entity_instanceA(), self.relation_type, self.get_related_entity_instanceB())
-
 
     def get_web_object(self):
 
@@ -138,7 +135,6 @@ class AbstractRelation(TempEntityClass):
             'end_date': self.end_date_written}
         return result
 
-
     def get_table_dict(self, entity):
         """Dict for the tabels in the html view
 
@@ -155,7 +151,8 @@ class AbstractRelation(TempEntityClass):
             rel_other_value = self.get_related_entity_instanceA()
             rel_type = self.relation_type.label_reverse
         else:
-            raise Exception("Did not find corresponding entity. Wiring of current relation to current entity is faulty.")
+            raise Exception(
+                "Did not find corresponding entity. Wiring of current relation to current entity is faulty.")
 
         result = {
             'relation_pk': self.pk,
@@ -167,19 +164,14 @@ class AbstractRelation(TempEntityClass):
             'end_date': self.end_date}
         return result
 
-
-
     # Various Methods enabling convenient shortcuts between entities, relations, fields, etc
     ####################################################################################################################
-
 
     # Methods dealing with all relations
     ####################################################################################################################
 
-
     _all_relation_classes = None
     _all_relation_names = None
-
 
     @classmethod
     def get_all_relation_classes(cls):
@@ -217,7 +209,6 @@ class AbstractRelation(TempEntityClass):
 
         return cls._all_relation_classes
 
-
     @classmethod
     def get_relation_class_of_name(cls, relation_name):
         """
@@ -229,8 +220,8 @@ class AbstractRelation(TempEntityClass):
             if relation_class.__name__.lower() == relation_name.lower():
                 return relation_class
 
-        raise Exception("Could not find relation class of name:", relation_name)
-
+        raise Exception(
+            "Could not find relation class of name:", relation_name)
 
     @classmethod
     def get_all_relation_names(cls):
@@ -246,16 +237,12 @@ class AbstractRelation(TempEntityClass):
 
         return cls._all_relation_names
 
-
-
     # Methods dealing with related relations and entities
     ####################################################################################################################
-
 
     _relation_classes_of_entity_class = {}
     _relation_classes_of_entity_name = {}
     _relation_field_names_of_entity_class = {}
-
 
     @classmethod
     def get_relation_classes_of_entity_class(cls, entity_class):
@@ -269,7 +256,6 @@ class AbstractRelation(TempEntityClass):
 
         return cls._relation_classes_of_entity_class[entity_class]
 
-
     @classmethod
     def get_relation_classes_of_entity_name(cls, entity_name):
         """
@@ -282,7 +268,6 @@ class AbstractRelation(TempEntityClass):
 
         return cls._relation_classes_of_entity_name[entity_name.lower()]
 
-
     @classmethod
     def add_relation_class_of_entity_class(cls, entity_class):
         """
@@ -294,15 +279,16 @@ class AbstractRelation(TempEntityClass):
         """
 
         # get the list of the class dictionary, create if not yet exists.
-        relation_class_list = cls._relation_classes_of_entity_class.get(entity_class, [])
+        relation_class_list = cls._relation_classes_of_entity_class.get(
+            entity_class, [])
 
         # append the current relation class to the list.
         relation_class_list.append(cls)
 
         # save into the dictionary, which uses the entity class as key and the extended list above as value.
         cls._relation_classes_of_entity_class[entity_class] = relation_class_list
-        cls._relation_classes_of_entity_name[entity_class.__name__.lower()] = relation_class_list
-
+        cls._relation_classes_of_entity_name[entity_class.__name__.lower(
+        )] = relation_class_list
 
     @classmethod
     def get_relation_field_names_of_entity_class(cls, entity_class):
@@ -316,7 +302,6 @@ class AbstractRelation(TempEntityClass):
 
         return cls._relation_field_names_of_entity_class[entity_class]
 
-
     @classmethod
     def add_relation_field_name_of_entity_class(cls, relation_name, entity_class):
         """
@@ -328,13 +313,14 @@ class AbstractRelation(TempEntityClass):
         """
 
         # get the list of the class dictionary, create if not yet exists.
-        relation_names_list = cls._relation_field_names_of_entity_class.get(entity_class, [])
+        relation_names_list = cls._relation_field_names_of_entity_class.get(
+            entity_class, [])
         # append the current relation field name to the list.
-        if relation_name not in relation_names_list: 
-            relation_names_list.append(relation_name) #TODO: this is a workaround, find out why it is called several times
+        if relation_name not in relation_names_list:
+            # TODO: this is a workaround, find out why it is called several times
+            relation_names_list.append(relation_name)
         # save into the dictionary, which uses the entity class as key and the extended list above as value.
         cls._relation_field_names_of_entity_class[entity_class] = relation_names_list
-
 
     def get_related_entity_instanceA(self):
         """
@@ -347,8 +333,7 @@ class AbstractRelation(TempEntityClass):
 
         :return: An entity instance related to the current relation instance
         """
-        return getattr( self, self.get_related_entity_field_nameA() )
-
+        return getattr(self, self.get_related_entity_field_nameA())
 
     def get_related_entity_instanceB(self):
         """
@@ -361,15 +346,12 @@ class AbstractRelation(TempEntityClass):
 
         :return: An entity instance related to the current relation instance
         """
-        return getattr( self, self.get_related_entity_field_nameB() )
-
-
+        return getattr(self, self.get_related_entity_field_nameB())
 
     # method stumps
     ####################################################################################################################
     # These stumps merely serve as placeholders so that both IDE and developers know that these methods exist.
     # They are implemented programmatically in the function 'generate_all_fields' in the class 'EntityRelationFieldGenerator'.
-
 
     @classmethod
     def get_related_entity_classA(cls):
@@ -402,8 +384,6 @@ class AbstractRelation(TempEntityClass):
         E.g. PersonWork -> "related_work"
         """
         return None
-
-
 
 
 #######################################################################
@@ -528,6 +508,7 @@ class EventWork(AbstractRelation):
 #
 #######################################################################
 
+
 @reversion.register(follow=['tempentityclass_ptr'])
 class WorkWork(AbstractRelation):
 
@@ -539,20 +520,24 @@ class WorkWork(AbstractRelation):
 #
 #######################################################################
 
+
 @reversion.register(follow=['tempentityclass_ptr'])
 class ManuscriptWork(AbstractRelation):
 
     pass
+
 
 @reversion.register(follow=['tempentityclass_ptr'])
 class ManuscriptPerson(AbstractRelation):
 
     pass
 
+
 @reversion.register(follow=['tempentityclass_ptr'])
 class ManuscriptPlace(AbstractRelation):
 
     pass
+
 
 @reversion.register(follow=['tempentityclass_ptr'])
 class ManuscriptInstitution(AbstractRelation):
@@ -565,6 +550,7 @@ class ManuscriptExpression(AbstractRelation):
 
     pass
 
+
 @reversion.register(follow=['tempentityclass_ptr'])
 class ExpressionWork(AbstractRelation):
 
@@ -573,6 +559,42 @@ class ExpressionWork(AbstractRelation):
 
 @reversion.register(follow=['tempentityclass_ptr'])
 class ExpressionPerson(AbstractRelation):
+
+    pass
+
+
+@reversion.register(follow=['tempentityclass_ptr'])
+class ManuscriptManuscriptpart(AbstractRelation):
+
+    pass
+
+
+@reversion.register(follow=['tempentityclass_ptr'])
+class InstitutionManuscriptpart(AbstractRelation):
+
+    pass
+
+
+@reversion.register(follow=['tempentityclass_ptr'])
+class PersonManuscriptpart(AbstractRelation):
+
+    pass
+
+
+@reversion.register(follow=['tempentityclass_ptr'])
+class WorkManuscriptpart(AbstractRelation):
+
+    pass
+
+
+@reversion.register(follow=['tempentityclass_ptr'])
+class PlaceManuscriptpart(AbstractRelation):
+
+    pass
+
+
+@reversion.register(follow=['tempentityclass_ptr'])
+class ExpressionManuscriptpart(AbstractRelation):
 
     pass
 
@@ -589,16 +611,18 @@ if a_ents:
             base_ents = ['Person', 'Institution', 'Place', 'Work', 'Event']
             if isinstance(rels, str):
                 if rels == 'all':
-                    rels = base_ents + [x['name'].title() for x in ents['entities']]
+                    rels = base_ents + [x['name'].title()
+                                        for x in ents['entities']]
             else:
                 rels = base_ents + rels
             for r2 in rels:
-                attributes = {"__module__":__name__}
+                attributes = {"__module__": __name__}
                 if r2 in base_ents:
                     rel_class_name = f"{r2.title()}{ent['name'].title()}"
                 else:
                     rel_class_name = f"{ent['name'].title()}{r2.title()}"
                 if rel_class_name not in globals().keys():
                     print(rel_class_name)
-                    ent_class = type(rel_class_name, (AbstractRelation,), attributes)
+                    ent_class = type(
+                        rel_class_name, (AbstractRelation,), attributes)
                     globals()[rel_class_name] = ent_class
