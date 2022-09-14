@@ -647,7 +647,7 @@ class Manuscript(AbstractEntity):
 
 
 @reversion.register(follow=["tempentityclass_ptr"])
-class ManuscriptPart(AbstractEntity):
+class Manuscriptpart(AbstractEntity):
 
 
     identifier = models.CharField(max_length=255)
