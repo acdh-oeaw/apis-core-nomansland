@@ -689,7 +689,7 @@ if a_ents:
 def create_default_uri(sender, instance, **kwargs):
     if (
         kwargs["created"]
-        and sender in [Person, Institution, Place, Work, Event, Expression, Manuscript] + ents_cls_list
+        and sender in [Person, Institution, Place, Work, Event, Expression, Manuscript, Manuscriptpart] + ents_cls_list
     ):
         if BASE_URI.endswith("/"):
             base1 = BASE_URI[:-1]
