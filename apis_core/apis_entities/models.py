@@ -645,6 +645,15 @@ class Manuscript(AbstractEntity):
     manuscript_conditions = models.ManyToManyField(ManuscriptConditions, null=True, blank=True)
 
 
+@reversion.register(follow=["tempentityclass_ptr"])
+class ManuscriptPart(AbstractEntity):
+
+
+    identifier = models.CharField(max_length=255)
+    locus = models.CharField(max_length=255, blank=True, null=True, help_text="Locus of the manuscript part")
+    type = models.ForeignKey(ManuscriptPartType, null=True, blank=True, on_delete=models.SET_NULL)
+
+
 
 def prepare_fields_dict(fields_list, vocabs, vocabs_m2m):
     res = dict()
