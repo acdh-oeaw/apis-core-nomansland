@@ -341,7 +341,7 @@ class EntityUriTable(tables.Table):
 
 class LabelTableBase(tables.Table):
 
-    label2 = tables.TemplateColumn(template_name="apis_relations/labels_label.html")
+    label = tables.TemplateColumn(template_name="apis_relations/labels_label.html")
 
     # reuse the logic for ordering and rendering *_date_written
     # Important: The names of these class variables must correspond to the column field name,
@@ -359,13 +359,20 @@ class LabelTableBase(tables.Table):
         # Note that as the next attribute 'sequence' builds on this list 'fields', the order defined within this list
         # will be reused for the tuple 'sequence'. So if the order needs to be changed, better do it here in the list 'fields'.
         fields = ['start_date_written', 'end_date_written', 'label_type', 'isoCode_639_3']
-        sequence = ('label2',) + tuple(fields)
+        sequence = ('label',) + tuple(fields)
 
         # add class="paleblue" to <table> tag
         attrs = {
             "class": "table table-hover table-striped table-condensed",
-            "id": "PL_conn"
+            "id": "PL_conn",
+            "style": "table-layout: fixed;"
         }
+    
+    def __init__(self, **kwargs):
+        self.base_columns["start_date_written"].attrs = {"th": {"class": "d-none d-lg-table-cell"},"td": {"class": "d-none d-lg-table-cell"}}
+        self.base_columns["end_date_written"].attrs = {"th": {"class": "d-none d-lg-table-cell"},"td": {"class": "d-none d-lg-table-cell"}}
+        self.base_columns["isoCode_639_3"].attrs = {"th": {"class": "d-none d-lg-table-cell"},"td": {"class": "d-none d-lg-table-cell"}}
+        super().__init__(**kwargs)
 
 
 
