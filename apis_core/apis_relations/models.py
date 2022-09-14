@@ -564,6 +564,12 @@ class ExpressionPerson(AbstractRelation):
 
 
 @reversion.register(follow=['tempentityclass_ptr'])
+class ManuscriptManuscriptpart(AbstractRelation):
+
+    pass
+
+
+@reversion.register(follow=['tempentityclass_ptr'])
 class InstitutionManuscriptpart(AbstractRelation):
 
     pass
