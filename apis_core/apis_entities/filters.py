@@ -410,6 +410,16 @@ class ManuscriptListFilter(GenericListFilter):
 
 Manuscript.set_list_filter_class(ManuscriptListFilter)
 
+class ManuscriptpartListFilter(GenericListFilter):
+
+    class Meta(GenericListFilter.Meta):
+        model = Manuscriptpart
+
+    name = django_filters.CharFilter()
+
+Manuscriptpart.set_list_filter_class(ManuscriptpartListFilter)
+
+
 class ExpressionListFilter(GenericListFilter):
 
     class Meta(GenericListFilter.Meta):
