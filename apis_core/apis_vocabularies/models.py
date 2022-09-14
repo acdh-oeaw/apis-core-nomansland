@@ -256,7 +256,7 @@ class ScriptType(VocabsBaseClass):
 
 
 @reversion.register(follow=['vocabsbaseclass_ptr'])
-class ManusciptpartType(VocabsBaseClass):
+class ManuscriptpartType(VocabsBaseClass):
     """Vocab to hold the type of manuscript part"""
     pass
 
