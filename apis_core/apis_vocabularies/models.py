@@ -256,7 +256,7 @@ class ScriptType(VocabsBaseClass):
 
 
 @reversion.register(follow=['vocabsbaseclass_ptr'])
-class ManusciptPartType(VocabsBaseClass):
+class ManuscriptpartType(VocabsBaseClass):
     """Vocab to hold the type of manuscript part"""
     pass
 
@@ -532,6 +532,42 @@ class ManuscriptWorkRelation(AbstractRelationType):
 
 @reversion.register(follow=['relationbaseclass_ptr'])
 class ManuscriptPersonRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class ManuscriptManuscriptpartRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class InstitutionManuscriptpartRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class PersonManuscriptpartRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class WorkManuscriptpartRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class PlaceManuscriptpartRelation(AbstractRelationType):
+    """Holds controlled vocabularies relation types of Works and Works"""
+    pass
+
+
+@reversion.register(follow=['relationbaseclass_ptr'])
+class ExpressionManuscriptpartRelation(AbstractRelationType):
     """Holds controlled vocabularies relation types of Works and Works"""
     pass
 

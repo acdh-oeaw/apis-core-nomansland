@@ -9,12 +9,13 @@ from django.http import HttpResponse, Http404
 from django.template.loader import render_to_string
 from apis_core.apis_relations import forms as relation_form_module
 
-from apis_core.apis_entities.models import Person, Institution, Place, Event, Work, AbstractEntity, Manuscript, Expression
+from apis_core.apis_entities.models import Manuscriptpart, Person, Institution, Place, Event, Work, AbstractEntity, Manuscript, Expression
 from apis_core.apis_labels.models import Label
 from apis_core.apis_metainfo.models import Uri
+from apis_core.apis_vocabularies.models import ManuscriptManuscriptpartRelation
 from .forms2 import GenericRelationForm
 from .models import (
-    ExpressionPerson, PersonPlace, PersonPerson, PersonInstitution, InstitutionPlace,
+    ExpressionPerson, ManuscriptManuscriptpart, PersonPlace, PersonPerson, PersonInstitution, InstitutionPlace,
     InstitutionInstitution, PlaceExpression, PlacePlace, PersonEvent, InstitutionEvent, PlaceEvent, PersonWork,
     InstitutionWork, PlaceWork, EventWork, ManuscriptPerson, ManuscriptExpression, ManuscriptInstitution,
     ManuscriptPlace, ManuscriptWork, ExpressionWork, WorkWork
@@ -98,6 +99,8 @@ registered_forms = {'PersonPlaceForm': [PersonPlace, Person, Place],
                     'ManuscriptPlaceHighlighterForm': [ManuscriptPlace, Manuscript, Place],
                     'ManuscriptWorkForm': [ManuscriptWork, Manuscript, Work],
                     'ManuscriptWorkHighlighterForm': [ManuscriptWork, Manuscript, Work],
+                    'ManuscriptManuscriptpartForm': [ManuscriptManuscriptpartRelation, Manuscript, Manuscriptpart],
+                    'ManuscriptManuscriptpartHighlighterForm': [ManuscriptManuscriptpart, Manuscript, Manuscriptpart],
                     'ManuscriptExpressionForm': [ManuscriptExpression, Manuscript, Expression],
                     'ManuscriptExpressionHighlighterForm': [ManuscriptExpression, Manuscript, Expression],
                     'ExpressionWorkForm': [ExpressionWork, Work, Expression],
