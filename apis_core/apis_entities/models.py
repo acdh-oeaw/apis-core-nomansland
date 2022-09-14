@@ -21,6 +21,7 @@ from apis_core.apis_vocabularies.models import (
     EventType,
     InstitutionType,
     Language,
+    ManusciptPartType,
     ManuscriptConditions,
     PlaceType,
     ProfessionType,
@@ -651,7 +652,7 @@ class ManuscriptPart(AbstractEntity):
 
     identifier = models.CharField(max_length=255)
     locus = models.CharField(max_length=255, blank=True, null=True, help_text="Locus of the manuscript part")
-    type = models.ForeignKey(ManuscriptPartType, null=True, blank=True, on_delete=models.SET_NULL)
+    type = models.ForeignKey(ManusciptPartType, null=True, blank=True, on_delete=models.SET_NULL)
 
 
 
