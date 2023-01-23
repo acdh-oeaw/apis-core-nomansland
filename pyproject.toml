@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "apis-core"
-version = "0.17.2"
-description = "Base package for the APIS framework"
+version = "0.5.1"
+description = "Base package for the Nomansland version of the APIS project."
 authors = ["Matthias Schlögl <matthias.schloegl@oeaw.ac.at>"]
 license = "MIT"
 packages = [{include = "apis_core"}, {include = "browsing"}, {include = "infos"}]
