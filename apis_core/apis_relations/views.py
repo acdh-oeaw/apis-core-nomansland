@@ -15,10 +15,10 @@ from apis_core.apis_metainfo.models import Uri
 from apis_core.apis_vocabularies.models import ManuscriptManuscriptpartRelation
 from .forms2 import GenericRelationForm
 from .models import (
-    ExpressionPerson, ManuscriptManuscriptpart, PersonPlace, PersonPerson, PersonInstitution, InstitutionPlace,
-    InstitutionInstitution, PlaceExpression, PlacePlace, PersonEvent, InstitutionEvent, PlaceEvent, PersonWork,
+    ExpressionManuscriptpart, ExpressionPerson, InstitutionManuscriptpart, ManuscriptManuscriptpart, PersonManuscriptpart, PersonPlace, PersonPerson, PersonInstitution, InstitutionPlace,
+    InstitutionInstitution, PlaceExpression, PlaceManuscriptpart, PlacePlace, PersonEvent, InstitutionEvent, PlaceEvent, PersonWork,
     InstitutionWork, PlaceWork, EventWork, ManuscriptPerson, ManuscriptExpression, ManuscriptInstitution,
-    ManuscriptPlace, ManuscriptWork, ExpressionWork, WorkWork
+    ManuscriptPlace, ManuscriptWork, ExpressionWork, WorkManuscriptpart, WorkWork
 )
 #from .forms import PersonLabelForm, InstitutionLabelForm, PlaceLabelForm, EventLabelForm
 from .tables import LabelTableEdit
@@ -71,6 +71,7 @@ registered_forms = {'PersonPlaceForm': [PersonPlace, Person, Place],
                     'PersonWorkForm': [PersonWork, Person, Work],
                     'PersonInstitutionHighlighterForm': [PersonInstitution, Person, Institution],
                     'PersonWorkHighlighterForm': [PersonWork, Person, Work],
+                    'PersonManuscriptpartForm': [PersonManuscriptpart, Person, Manuscriptpart],
                     'PlaceWorkHighlighterForm': [PlaceWork, Place, Work],
                     'InstitutionWorkHighlighterForm': [InstitutionWork, Institution, Work],
                     'InstitutionPlaceForm': [InstitutionPlace, Institution, Place],
@@ -86,8 +87,10 @@ registered_forms = {'PersonPlaceForm': [PersonPlace, Person, Place],
                     'WorkWorkForm': [WorkWork, Work, Work],
                     'PlaceExpressionForm': [PlaceExpression, Place, Expression],
                     'PlacePlaceForm': [PlacePlace, Place, Place],
+                    'PlaceManuscriptpartForm': [PlaceManuscriptpart, Place, Manuscriptpart],
                     'EventWorkForm': [EventWork, Event, Work],
                     'InstitutionLabelForm': [Label, Institution, Label],
+                    'InstitutionManuscriptpartForm': [InstitutionManuscriptpart, Institution, Manuscriptpart],
                     'PersonLabelForm': [Label, Person, Label],
                     'EventLabelForm': [Label, Event, Label],
                     'PersonResolveUriForm': [Uri, Person, Uri],
@@ -107,9 +110,11 @@ registered_forms = {'PersonPlaceForm': [PersonPlace, Person, Place],
                     'ExpressionWorkHighlighterForm': [ExpressionWork, Work, Expression],
                     'ExpressionPersonForm': [ExpressionPerson, Person, Expression],
                     'ExpressionPersonHighlighterForm': [ExpressionPerson, Person, Expression],
+                    'ExpressionManuscriptpartForm': [ExpressionManuscriptpart, Expression, Manuscriptpart],
                     'AddRelationHighlighterPersonForm': [],
                     'ManuscriptLabelForm': [Label, Manuscript, Label],
                     'ExpressionLabelForm': [Label, Expression, Label],
+                    'WorkManuscriptpartForm': [WorkManuscriptpart, Work, Manuscriptpart],
                     #'PlaceHighlighterForm': [Annotation, ],
                     #'PersonHighlighterForm': [Annotation, ]
                     }
