@@ -617,7 +617,11 @@ class Expression(AbstractEntity):
     script_body = models.ForeignKey(ScriptType, null=True, blank=True, on_delete=models.SET_NULL, related_name="ScriptTypeBody_set")
 
     def __str__(self):
-        return self.title
+        man_expres = self.manuscriptexpression_set
+        if man_expres.count() == 1:
+            return f"{self.title}|{self.manuscriptexpression_set.all()[0].related_manuscript.name}"
+        else:
+            return self.title
 
 
 
