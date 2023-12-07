@@ -1,6 +1,7 @@
 import math
 import re
 from datetime import datetime, timedelta
+import convertdate
 
 
 def parse_date( date_string: str ) -> (datetime, datetime, datetime):
@@ -246,7 +247,26 @@ def parse_date( date_string: str ) -> (datetime, datetime, datetime):
                 if date_single_string != "":
                     date_single = parse_iso_date(date_single_string)
 
-
+        elif "ah" in date_string.lower():
+            date_ab = None
+            date_bis = None
+            date_single = None
+            split_date = date_string.split("ah")
+            preproc_date = re.match(r"\d{1,4}", split_date[0].strip()) 
+            preproc_date_mm_dd = re.match(r"(\d{1,4})-(\d{1,2})-(\d{1,2})", split_date[0].strip()) 
+            if preproc_date:
+                date_ab = convertdate.islamic.to_gregorian(int(preproc_date.group(0).strip()), 1, 1)
+                date_bis = convertdate.islamic.to_gregorian(int(preproc_date.group(0).strip()), 12, 29)
+                date_single = convertdate.islamic.to_gregorian(int(preproc_date.group(0).strip()), 6, 15)
+            elif preproc_date_mm_dd:
+                date_ab = convertdate.islamic.to_gregorian(int(preproc_date_mm_dd.group(1).strip()), int(preproc_date_mm_dd.group(2).strip()), int(preproc_date_mm_dd.group(3).strip()))
+                date_bis = date_ab
+                date_single = date_ab
+            else:
+                raise ValueError("Could not interpret date.")
+            date_ab = datetime(year=date_ab[0], month=date_ab[1], day=date_ab[2])
+            date_bis = datetime(year=date_bis[0], month=date_bis[1], day=date_bis[2])
+            date_single = datetime(year=date_single[0], month=date_single[1], day=date_single[2])
         else:
             # date string contains no angle brackets. Interpret the possible date formats
             date_string = date_string.lower()
