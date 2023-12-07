@@ -22,172 +22,46 @@ def parse_date( date_string: str ) -> (datetime, datetime, datetime):
     """
 
 
-    def parse_date_range_individual(date, ab=False, bis=False):
+
+    def get_last_day_of_month(month, year):
         """
-        As a sub function to parse_date, this function parse_date_individual handles a very single date since
-        in a text field a user can pass multiple dates.
+        Helper function to return the last day of a given month and year (respecting leap years)
 
+        :param month : int
 
-        :param date : str :
-            recognized sub string which potentially is a date (in julian calendar format)
+        :param year : int
 
-        :param ab : boolean : optional
-            indicates if a single date shall be intepreted as a starting date of a range
-
-        :param bis : boolean : optional
-            indicates if a single date shall be intepreted as an ending date of a range
-
-
-        :return tuple (datetime, datetime) :
-            two datetime objects representing the dates.
-            Two indicate that an implicit single date range was given (e.g. a year without months or days).
-            Has to be further processed then since it can be either a starting or ending date range.
-        or
-        :return datetime :
-            One datetime object representing the date.
-            if a single date was given.
+        :return day : int
         """
 
-
-        def get_last_day_of_month(month, year):
-            """
-            Helper function to return the last day of a given month and year (respecting leap years)
-
-            :param month : int
-
-            :param year : int
-
-            :return day : int
-            """
-
-            if month in [1, 3, 5, 7, 8, 10, 12]:
-                # 31 day months
-                return 31
-            elif month in [4, 6, 9, 11]:
-                # 30 day months
-                return 30
-            elif month == 2:
-                # special case february, differentiate leap years with respect to gregorian leap rules
-                if year % 4 == 0:
-                    if year % 100 == 0:
-                        if year % 400 == 0:
-                            # divisible by 4, by 100, by 400
-                            # thus is leap year
-                            return 29
-                        else:
-                            # divisible by 4, by 100, not by 400
-                            # thus is not leap yar
-                            return 28
-                    else:
-                        # divisible by 4, not by 100, if by 400 doesn't matter
+        if month in [1, 3, 5, 7, 8, 10, 12]:
+            # 31 day months
+            return 31
+        elif month in [4, 6, 9, 11]:
+            # 30 day months
+            return 30
+        elif month == 2:
+            # special case february, differentiate leap years with respect to gregorian leap rules
+            if year % 4 == 0:
+                if year % 100 == 0:
+                    if year % 400 == 0:
+                        # divisible by 4, by 100, by 400
                         # thus is leap year
                         return 29
+                    else:
+                        # divisible by 4, by 100, not by 400
+                        # thus is not leap yar
+                        return 28
                 else:
-                    # not divisible by 4, if by 100 or by 400 doesn't matter
-                    return 28
+                    # divisible by 4, not by 100, if by 400 doesn't matter
+                    # thus is leap year
+                    return 29
             else:
-                # no valid month
-                raise ValueError("Month " + str(month) + " does not exist.")
-
-
-
-        # replace all kinds of delimiters
-        date = date.replace(" ", "").replace("-", ".").replace("/", ".").replace("\\", ".")
-
-        # parse into variables for use later
-        year = None
-        month = None
-        day = None
-
-        # check for all kind of Y-M-D combinations
-        if re.match(r"\d{3,4}$", date):
-            # year
-            year = int(date)
-
-        elif re.match(r"\d{1,2}\.\d{3,4}$", date):
-            # month - year
-            tmp = re.split(r"\.", date)
-            month = int(tmp[0])
-            year = int(tmp[1])
-
-        elif re.match(r"\d{1,2}\.\d{1,2}\.\d{3,4}$", date):
-            # day - month - year
-            tmp = re.split(r"\.", date)
-            day = int(tmp[0])
-            month = int(tmp[1])
-            year = int(tmp[2])
-
-        elif re.match(r"\d{3,4}\.\d{1,2}\.?$", date):
-            # year - month
-            tmp = re.split(r"\.", date)
-            year = int(tmp[0])
-            month = int(tmp[1])
-
-        elif re.match(r"\d{3,4}\.\d{1,2}\.\d{1,2}\.?$", date):
-            # year - month - day
-            tmp = re.split(r"\.", date)
-            year = int(tmp[0])
-            month = int(tmp[1])
-            day = int(tmp[2])
+                # not divisible by 4, if by 100 or by 400 doesn't matter
+                return 28
         else:
-            # No sensical interpretation found
-            raise ValueError("Could not interpret date.")
-
-
-        if (ab and bis) or year is None:
-            # both ab and bis in one single date are not valid, neither is the absence of a year.
-            raise ValueError("Could not interpret date.")
-
-        elif not ab and not bis and (month is None or day is None):
-            # if both ab and bis are False and either month or day is empty, then it was given
-            # an implicit date range (range of all months if given a year or all days if given a month)
-
-            # construct implicit month range
-            if month is None:
-                month_ab = 1
-                month_bis = 12
-            else:
-                month_ab = month
-                month_bis = month
-
-            # construct implicit day range
-            if day is None:
-                day_ab = 1
-                day_bis = get_last_day_of_month(month_bis, year)
-            else:
-                day_ab = day
-                day_bis = day
-
-
-            # return a tuple from a single date (which the calling function has to further process)
-            return (
-                datetime(year=year, month=month_ab, day=day_ab),
-                datetime(year=year, month=month_bis, day=day_bis)
-            )
-
-        else:
-            # Either ab or bis is True. Then use the respective beginning or end of range and construct a precise date
-            # Or both ab and bis are False. Then construct a precise date from parsed values
-
-            # construct implicit month range if month is None
-            if month is None:
-                if ab and not bis:
-                    # is a starting date, thus take first month of year
-                    month = 1
-                elif not ab and bis:
-                    # is an ending date, thus take last month of year
-                    month = 12
-
-            # construct implicit day range if day is None
-            if day is None:
-                if ab and not bis:
-                    # is a starting date, thus take first day of month
-                    day = 1
-                elif not ab and bis:
-                    # is an ending date, thus take last month of year
-                    day = get_last_day_of_month(month=month, year=year)
-
-            return datetime(year=year, month=month, day=day)
+            # no valid month
+            raise ValueError("Month " + str(month) + " does not exist.")
 
 
     try:
@@ -202,6 +76,7 @@ def parse_date( date_string: str ) -> (datetime, datetime, datetime):
 
 
         if len(date_split_angle) > 1:
+
             # date string contains angle brackets. Parse them, ignore the rest
 
             def parse_iso_date(date_string):
@@ -246,100 +121,86 @@ def parse_date( date_string: str ) -> (datetime, datetime, datetime):
                 date_single_string = dates_iso[0].strip()
                 if date_single_string != "":
                     date_single = parse_iso_date(date_single_string)
+            return date_single, date_ab, date_bis
 
-        elif "ah" in date_string.lower():
-            date_ab = None
-            date_bis = None
-            date_single = None
-            split_date = date_string.split("ah")
-            preproc_date = re.match(r"\d{1,4}", split_date[0].strip()) 
-            preproc_date_mm_dd = re.match(r"(\d{1,4})-(\d{1,2})-(\d{1,2})", split_date[0].strip()) 
-            if preproc_date:
-                date_ab = convertdate.islamic.to_gregorian(int(preproc_date.group(0).strip()), 1, 1)
-                date_bis = convertdate.islamic.to_gregorian(int(preproc_date.group(0).strip()), 12, 29)
-                date_single = convertdate.islamic.to_gregorian(int(preproc_date.group(0).strip()), 6, 15)
-            elif preproc_date_mm_dd:
-                date_ab = convertdate.islamic.to_gregorian(int(preproc_date_mm_dd.group(1).strip()), int(preproc_date_mm_dd.group(2).strip()), int(preproc_date_mm_dd.group(3).strip()))
-                date_bis = date_ab
-                date_single = date_ab
+        date_string = date_string.lower().strip()
+        date_ab = None
+        date_bis = None
+        date_single = None
+
+        date_ext = None
+        date_ah = False
+        # check for century prefixes
+        century = None
+        
+        date_prefixes = ["late", "before", "until"]
+        date_prefix = None
+        
+        for d_prefix in date_prefixes:
+            if d_prefix in date_string.lower():
+                date_string = date_string.replace(d_prefix, "").strip()
+                date_prefix = d_prefix
+        
+        for cent in re.finditer(r"(\d{1,2})c", date_string):
+            century = int(cent.group(1))
+            date_string = date_string.replace(cent.group(0), cent.group(1)).strip()
+
+        # check for AH prefixes
+        for ah in re.finditer(r"(\d{1,4}(-\d{1,2}-\d{1,2})?) ah", date_string):
+            date_ext = ah.group(1)
+            date_string = date_string.replace(ah.group(0), ah.group(1)).strip()
+            date_ah = True
+
+        if century is not None:
+            if not date_ah:
+                date_ab = datetime(year=century*100, month=1, day=1)
+                date_bis = datetime(year=century*100+99, month=12, day=31)
+                date_single = datetime(year=century*100+50, month=6, day=15)
             else:
-                raise ValueError("Could not interpret date.")
-            date_ab = datetime(year=date_ab[0], month=date_ab[1], day=date_ab[2])
-            date_bis = datetime(year=date_bis[0], month=date_bis[1], day=date_bis[2])
-            date_single = datetime(year=date_single[0], month=date_single[1], day=date_single[2])
-        else:
-            # date string contains no angle brackets. Interpret the possible date formats
-            date_string = date_string.lower()
-            date_string = date_string.replace(" ", "")
+                date_ab = convertdate.islamic.to_gregorian(century*100, 1, 1)
+                date_bis = convertdate.islamic.to_gregorian(century*100+99, 12, 29)
+                date_single = convertdate.islamic.to_gregorian(century*100+50, 6, 15)
 
-            # helper variables for the following loop
-            found_ab = False
-            found_bis = False
-            found_single = False
+        # get prefixes first
+        if date_ab is None and date_bis is None and date_single is None:
+            date_regex = re.match(r"(\d{1,4})-?(\d{1,2})?-?(\d{1,2})?", date_string)
+            if date_regex and not date_ah:
+                if date_regex.group(3) is not None:
+                    date_ab = datetime(year=int(date_regex.group(1)), month=int(date_regex.group(2)), day=int(date_regex.group(3)))
+                    date_bis = date_ab
+                    date_single = date_ab
+                elif date_regex.group(2) is not None:
+                    date_ab = datetime(year=int(date_regex.group(1)), month=int(date_regex.group(2)), day=1)
+                    date_bis = datetime(year=int(date_regex.group(1)), month=int(date_regex.group(2)), day=get_last_day_of_month(int(date_regex.group(2)), int(date_regex.group(1))))
+                    date_single = datetime(year=int(date_regex.group(1)), month=int(date_regex.group(2)), day=15)
+                else:
+                    date_ab = datetime(year=int(date_regex.group(1)), month=1, day=1)
+                    date_bis = datetime(year=int(date_regex.group(1)), month=12, day=31)
+                    date_single = datetime(year=int(date_regex.group(1)), month=6, day=15)
+            elif date_regex and date_ah:
+                if date_regex.group(3) is not None:
+                    date_ab = convertdate.islamic.to_gregorian(int(date_regex.group(1)), int(date_regex.group(2)), int(date_regex.group(3)))
+                    date_bis = date_ab
+                    date_single = date_ab
+                elif date_regex.group(2) is not None:
+                    date_ab = convertdate.islamic.to_gregorian(int(date_regex.group(1)), int(date_regex.group(2)), 1)
+                    date_bis = convertdate.islamic.to_gregorian(int(date_regex.group(1)), int(date_regex.group(2)), 29)
+                    date_single = convertdate.islamic.to_gregorian(int(date_regex.group(1)), int(date_regex.group(2)), 15)
+                else:
+                    date_ab = convertdate.islamic.to_gregorian(int(date_regex.group(1)), 1, 1)
+                    date_bis = convertdate.islamic.to_gregorian(int(date_regex.group(1)), 12, 29)
+                    date_single = convertdate.islamic.to_gregorian(int(date_regex.group(1)), 6, 15)
 
-            # split by allowed keywords 'ab' and 'bis' and iterate over them
-            date_split_ab_bis = re.split(r"(ab|bis)", date_string)
-            for i, v in enumerate(date_split_ab_bis):
-
-                if v == "ab":
-                    # indicates that the next value must be a start date
-
-                    if found_ab or found_single:
-                        # if already found a ab_date or single date before then there is non-conformative redundancy
-                        raise ValueError("Redundant dates found.")
-                    found_ab = True
-
-                    # parse the next value which must be a parsable date string
-                    date_ab = parse_date_range_individual(date_split_ab_bis[i + 1], ab=True)
-
-                elif v == "bis":
-                    # indicates that the next value must be an end date
-
-                    if found_bis or found_single:
-                        # if already found a bis_date or single date before then there is non-conformative redundancy
-                        raise ValueError("Redundant dates found.")
-                    found_bis = True
-
-                    # parse the next value which must be a parsable date string
-                    date_bis = parse_date_range_individual(date_split_ab_bis[i + 1], bis=True)
-
-                elif v != "" and not found_ab and not found_bis and not found_single:
-                    # indicates that this value must be a date
-
-                    found_single = True
-
-                    # parse the this value which must be a parsable date string
-                    date_single = parse_date_range_individual(v)
-
-                    if type(date_single) is tuple:
-                        #  if result of parse_date_range_individual is a tuple then the date was an implict range.
-                        #  Then split it into start and end dates
-                        date_ab = date_single[0]
-                        date_bis = date_single[1]
-
-            if date_ab and date_bis:
-                # date is a range
-
-                if date_ab > date_bis:
-                    raise ValueError("'ab-date' must be before 'bis-date' in time")
-
-                # calculate difference between start and end date of range,
-                # and use it to calculate a single date for usage as median.
-                days_delta_half = math.floor((date_bis - date_ab).days / 2, )
-                date_single = date_ab + timedelta(days=days_delta_half)
-
-            elif date_ab is not None and date_bis is None:
-                # date is only the start of a range, save it also as the single date
-
-                date_single = date_ab
-
-            elif date_ab is None and date_bis is not None:
-                # date is only the end of a range, save it also as the single date
-
-                date_single = date_bis
 
     except Exception as e:
         print("Could not parse date: '", date_string, "' due to error: ", e)
+        return None, None, None
+    if isinstance(date_ab, tuple):
+        date_ab = datetime(year=date_ab[0], month=date_ab[1], day=date_ab[2])
+    if isinstance(date_bis, tuple):
+        date_bis = datetime(year=date_bis[0], month=date_bis[1], day=date_bis[2])
+    if isinstance(date_single, tuple):
+        date_single = datetime(year=date_single[0], month=date_single[1], day=date_single[2])
 
     return date_single, date_ab, date_bis
 
@@ -428,4 +289,4 @@ def get_date_help_text_from_dates(single_date, single_start_date, single_end_dat
 
 def get_date_help_text_default():
 
-    return "Dates are interpreted by defined rules. If this fails, an iso-date can be explicitly set with '&lt;YYYY-MM-DD&gt;'."
+    return "Please always use YYYY-MM-DD (or YYYY-MM) format for dates. If you want to add Hijri dates use 'AH' as postfix, eg. '1234-12-12 AH'. You can specify centuries by using 'c' as postfix, eg. '12c' or '12c AH'. You can also specify date ranges by using angle brackets, eg. '<1234-12-12, 1234-12-13>' or '<1234-12-12, 1234-12-13, 1234-12-14>'. Please note that in angel brackets only Gregorian ISO dates can be used."
