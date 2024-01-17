@@ -153,9 +153,9 @@ def parse_date( date_string: str ) -> (datetime, datetime, datetime):
 
         if century is not None:
             if not date_ah:
-                date_ab = datetime(year=century*100, month=1, day=1)
-                date_bis = datetime(year=century*100+99, month=12, day=31)
-                date_single = datetime(year=century*100+50, month=6, day=15)
+                date_ab = datetime(year=(century-1)*100, month=1, day=1)
+                date_bis = datetime(year=(century-1)*100+99, month=12, day=31)
+                date_single = datetime(year=(century-1)*100+50, month=6, day=15)
             else:
                 date_ab = convertdate.islamic.to_gregorian(century*100, 1, 1)
                 date_bis = convertdate.islamic.to_gregorian(century*100+99, 12, 29)
